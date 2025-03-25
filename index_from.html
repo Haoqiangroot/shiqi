@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>iframe</title>
+
+<meta name="viewport" content="width=device-width">
+
+<meta name="description" content="A collection of loading spinners animated with CSS">
+
+<meta property="og:title" content="Single Element CSS Spinners">
+
+<meta property="og:type" content="website">
+
+<meta property="og:description" content="A collection of loading spinners animated with CSS">
+
+
+
+<script src="script/modernizr-2.8.2.js"></script>
+
+<link rel="stylesheet" href="css/main.css">
+
+<link rel="stylesheet" href="css/load4.css">
+<script>
+console.log("加载中")
+
+ function aaa(){
+     console.log("dj");
+    var CustomEvent = {
+	id:'1'
+    };  
+    window.parent.postMessage(CustomEvent, '*'); // '*' 表示允许任何来源，出于安全考虑，应替换为具体的源  
+ }
+aaa()
+console.log("加载结束")
+</script>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="inner"></div>
+
+</header>
+
+<main style="margin-top:190px">
+
+  <div class="inner">
+
+
+
+    <div class="load-container load4">
+
+      <div class="loader">Loading...</div>
+
+      <a href="#load4">页面跳转中</a>
+      </div>
+
+
+  </div>
+
+  <div class="overlay hidden"></div>
+
+  <!--really pissed off Jade can't handle vars in includes - should be able to just loop this:-->
+
+  <div id="load1" class="source hidden">
+
+  <textarea readonly class="markup"><div class="loader">Loading...</div>
+
+</textarea>
+
+  </div>
+
+</main>
+
+<div class="footer-banner" style="width:728px; margin:20px auto 0"></div>
+
+<script src="http://www.jq22.com/jquery/1.7.2/jquery.min.js"></script>
+<script>
+
+</script>
+</body>
+
+</html>
