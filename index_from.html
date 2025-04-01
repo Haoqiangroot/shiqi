@@ -30,7 +30,12 @@ console.log("加载中")
 
  function aaa(){
      console.log("dj");
-	const info= location.href.split("?")[1].split("=")[1]
+	 let info=0
+	 try{
+		info= location.href.split("?")[1].split("=")[1]
+	 }catch(e){
+		 
+	 }
     var CustomEvent = {
 	data:info?info:0
     };  
