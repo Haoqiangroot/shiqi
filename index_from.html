@@ -31,7 +31,7 @@ console.log("加载中")
  function aaa(){
      console.log("dj");
     var CustomEvent = {
-	data:'1'
+	data:location.href.split("?")[1].split("=")[1]
     };  
     window.parent.postMessage(CustomEvent, '*'); // '*' 表示允许任何来源，出于安全考虑，应替换为具体的源  
  }
