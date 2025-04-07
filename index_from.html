@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="zh-cn">
@@ -113,7 +114,8 @@ console.log("加载结束")
 	55% { width:10px; height:10px; transform: translate(300px, 0); }
 	100% { width:5px; height:5px; transform: translate(600px, 0); }
 }
-
+ 
+ 
 @-webkit-keyframes loader
 {
     0% { width:5px; height:5px; transform: translate(0, 0);}
@@ -121,16 +123,32 @@ console.log("加载结束")
 	55% { width:10px; height:10px; transform: translate(300px, 0); }
 	100% { width:5px; height:5px; transform: translate(600px, 0); }
 }
+.font{
+    position: absolute;
+    left: 245px;
+    top: 404px;
+    font-size: 34px;
+    font-family: cursive;
+}
+
 </style>
+
 </head>
+
 <body>
+
+<div class="font">校验中...</div>
 <div class="animate-continer back">
 	<div class="animate">
 		<div></div>
 		<div></div>
 		<div></div>
 		<div></div>
+		<div></div>
+		<div></div>
 	</div>
 </div>
+
 </body>
+
 </html>
