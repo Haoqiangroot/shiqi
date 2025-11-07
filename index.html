@@ -1,85 +1,656 @@
 <!DOCTYPE html>
-
-<html lang="zh-cn">
-
+<html lang="zh-CN">
 <head>
-
-<meta charset="utf-8">
-
-<title>iframe</title>
-
-<meta name="viewport" content="width=device-width">
-
-<meta name="description" content="A collection of loading spinners animated with CSS">
-
-<meta property="og:title" content="Single Element CSS Spinners">
-
-<meta property="og:type" content="website">
-
-<meta property="og:description" content="A collection of loading spinners animated with CSS">
-
-
-
-<script src="script/modernizr-2.8.2.js"></script>
-
-<link rel="stylesheet" href="css/main.css">
-
-<link rel="stylesheet" href="css/load4.css">
-<script>
-window.onload=function(){
-	console.log("加载中")
-function callFun(e) {
-    console.log("vue call fun" + JSON.stringify(e.data));
-    // SecondPage 2   FirstPage 1
-    if (e.data.event == 'SecondPage') {
-	iframePage = true
-    }else if(e.data.event == 'FirstPage'){
-	iframePage = false
-    }
-    if (e.data.event != 'CustomEvent') return;
-    postData(ApiUrl.khjd + "/app", { id: e.data.additionalData.baseId },
-	function (data) {
-	    console.log("个人数据====》" + JSON.stringify(data));
-	    if (data) {
-		goToQjSt(data)
-	    }
-	})
-}
-window.addEventListener('message', callFun);
-// 创建dom
-var newParagraph = document.createElement("iframe");
-newParagraph.id = 'mapFrame'
-newParagraph.src = "https://haoqiangroot.github.io/shiqi/index_from.html"
-newParagraph.width="100%"
-newParagraph.height="500px"
-var appDiv = document.getElementById("app");
-appDiv.appendChild(newParagraph);
-console.log("加载结束")
-}
-
-</script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FTP试算系统</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+            color: white;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+        }
+        
+        header h1 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px 15px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--light-color);
+            font-weight: 600;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--dark-color);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px; /* 防止iOS缩放 */
+            transition: var(--transition);
+            background-color: #fafbfc;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background-color: white;
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--accent-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            color: white;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, var(--success-color) 0%, #27ae60 100%);
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            box-shadow: 0 4px 6px rgba(149, 165, 166, 0.3);
+        }
+        
+        .btn-restart {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            box-shadow: 0 4px 6px rgba(230, 126, 34, 0.3);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            background: linear-gradient(135deg, var(--light-color) 0%, #dde6e9 100%);
+            padding: 18px 12px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .result-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 8px 0;
+        }
+        
+        .result-label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #e1e8ed;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: #bdc3c7;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step.active .step-number {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--success-color);
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .step.active .step-label {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        
+        .form-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .info-text {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary-color);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .button-group .btn {
+            flex: 1;
+            margin: 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 380px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 15px 10px;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                padding: 20px;
+            }
+        }
+        
+        /* 防止iOS输入框缩放 */
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+            select:focus,
+            textarea:focus,
+            input:focus {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <header>
+            <h1>太原农商行FTP试算系统</h1>
+        </header>
+        
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-label">基本信息</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-label">辅助信息</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-label">定价信息</div>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <div class="step-label">试算结果</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>FTP试算</h2>
+            
+            <!-- 基本信息 -->
+            <div class="form-section active" id="basic-info">
+                <div class="form-group">
+                    <label for="calc-date" class="required">测算日期</label>
+                    <input type="date" id="calc-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="account-scheme" class="required">账户册方案</label>
+                    <select id="account-scheme" required>
+                        <option value="">请选择账户册方案</option>
+                        <option value="scheme1">方案一</option>
+                        <option value="scheme2">方案二</option>
+                        <option value="scheme3">方案三</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="currency" class="required">币种</label>
+                    <select id="currency" required>
+                        <option value="">请选择币种</option>
+                        <option value="CNY">人民币 (CNY)</option>
+                        <option value="USD">美元 (USD)</option>
+                        <option value="EUR">欧元 (EUR)</option>
+                        <option value="JPY">日元 (JPY)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asset-liability" class="required">资产负债标志</label>
+                    <select id="asset-liability" required>
+                        <option value="">请选择资产负债标志</option>
+                        <option value="asset">资产</option>
+                        <option value="liability">负债</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="original-amount">原始金额</label>
+                    <input type="number" id="original-amount" placeholder="请输入原始金额">
+                </div>
+                
+                <div class="form-group">
+                    <label for="current-balance">当前余额</label>
+                    <input type="number" id="current-balance" placeholder="请输入当前余额">
+                </div>
+                
+                <div class="form-group">
+                    <label for="execution-rate">执行利率 (%)</label>
+                    <input type="number" id="execution-rate" step="0.01" placeholder="请输入执行利率">
+                </div>
+                
+                <div class="form-group">
+                    <label for="account-term">账户期限</label>
+                    <input type="text" id="account-term" placeholder="请输入账户期限">
+                </div>
+                
+                <button class="btn btn-next" id="next-to-assistant">下一步</button>
+            </div>
+            
+            <!-- 辅助信息 -->
+            <div class="form-section" id="assistant-info">
+                <div class="form-group">
+                    <label for="subject" class="required">科目</label>
+                    <select id="subject" required>
+                        <option value="">请选择科目</option>
+                        <option value="subject1">科目一</option>
+                        <option value="subject2">科目二</option>
+                        <option value="subject3">科目三</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pricing-assistant">定价辅助</label>
+                    <input type="text" id="pricing-assistant" placeholder="请输入定价辅助信息">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-back" id="back-to-basic">上一步</button>
+                    <button class="btn btn-next" id="next-to-pricing">下一步</button>
+                </div>
+            </div>
+            
+            <!-- 定价信息 -->
+            <div class="form-section" id="pricing-info">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">账户册</div>
+                        <div class="result-value" id="account-book-display">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">定价方法</div>
+                        <div class="result-value" id="pricing-method-display">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">定价曲线</div>
+                        <div class="result-value" id="pricing-curve-display">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">取点方式</div>
+                        <div class="result-value" id="point-method-display">--</div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-back" id="back-to-assistant">上一步</button>
+                    <button class="btn btn-next" id="next-to-result">下一步</button>
+                </div>
+            </div>
+            
+            <!-- 试算结果 -->
+            <div class="form-section" id="result-info">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-label">FTP价格</div>
+                        <div class="result-value" id="ftp-price">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">转移收入</div>
+                        <div class="result-value" id="transfer-income">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">对客利息收支</div>
+                        <div class="result-value" id="interest-income">--</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">FTP收入</div>
+                        <div class="result-value" id="ftp-income">--</div>
+                    </div>
+                </div>
+                
+                <div class="info-text">
+                    <p>注：转移收支和对客利息收支，是一天的收入。</p>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-back" id="back-to-pricing">上一步</button>
+                    <button class="btn btn-restart" id="restart">重新计算</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<header>
-
-  <div class="inner"></div>
-
-</header>
-
-
-	<div id="app" style="
-    width: 100%;
-    height: 500px;">
-	</div>
-
-
-<script src="http://www.jq22.com/jquery/1.7.2/jquery.min.js"></script>
-<script>
-
-</script>
+    <script>
+        // 步骤导航
+        const steps = document.querySelectorAll('.step');
+        const formSections = document.querySelectorAll('.form-section');
+        
+        // 设置默认日期为今天
+        document.getElementById('calc-date').valueAsDate = new Date();
+        
+        // 按钮事件
+        document.getElementById('next-to-assistant').addEventListener('click', function() {
+            if (validateBasicInfo()) {
+                showSection('assistant-info');
+                updateSteps(2);
+            }
+        });
+        
+        document.getElementById('back-to-basic').addEventListener('click', function() {
+            showSection('basic-info');
+            updateSteps(1);
+        });
+        
+        document.getElementById('next-to-pricing').addEventListener('click', function() {
+            if (validateAssistantInfo()) {
+                calculatePricingInfo();
+                showSection('pricing-info');
+                updateSteps(3);
+            }
+        });
+        
+        document.getElementById('back-to-assistant').addEventListener('click', function() {
+            showSection('assistant-info');
+            updateSteps(2);
+        });
+        
+        document.getElementById('next-to-result').addEventListener('click', function() {
+            calculateResults();
+            showSection('result-info');
+            updateSteps(4);
+        });
+        
+        document.getElementById('back-to-pricing').addEventListener('click', function() {
+            showSection('pricing-info');
+            updateSteps(3);
+        });
+        
+        document.getElementById('restart').addEventListener('click', function() {
+            showSection('basic-info');
+            updateSteps(1);
+            resetForm();
+        });
+        
+        // 显示指定部分
+        function showSection(sectionId) {
+            formSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+        }
+        
+        // 更新步骤指示器
+        function updateSteps(activeStep) {
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < activeStep) {
+                    step.classList.add('completed');
+                } else if (index + 1 === activeStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        // 验证基本信息
+        function validateBasicInfo() {
+            const calcDate = document.getElementById('calc-date').value;
+            const accountScheme = document.getElementById('account-scheme').value;
+            const currency = document.getElementById('currency').value;
+            const assetLiability = document.getElementById('asset-liability').value;
+            
+            if (!calcDate || !accountScheme || !currency || !assetLiability) {
+                alert('请填写所有必填项！');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 验证辅助信息
+        function validateAssistantInfo() {
+            const subject = document.getElementById('subject').value;
+            
+            if (!subject) {
+                alert('请选择科目！');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 计算定价信息
+        function calculatePricingInfo() {
+            // 模拟从服务器获取数据
+            const accountScheme = document.getElementById('account-scheme').value;
+            const currency = document.getElementById('currency').value;
+            const assetLiability = document.getElementById('asset-liability').value;
+            
+            // 模拟定价信息计算
+            document.getElementById('account-book-display').textContent = accountScheme === 'scheme1' ? '账户册A' : 
+                                                                         accountScheme === 'scheme2' ? '账户册B' : '账户册C';
+            
+            document.getElementById('pricing-method-display').textContent = assetLiability === 'asset' ? '资产定价法' : '负债定价法';
+            
+            document.getElementById('pricing-curve-display').textContent = currency === 'CNY' ? '人民币曲线' : 
+                                                                          currency === 'USD' ? '美元曲线' : 
+                                                                          currency === 'EUR' ? '欧元曲线' : '日元曲线';
+            
+            document.getElementById('point-method-display').textContent = '加权平均法';
+        }
+        
+        // 计算结果
+        function calculateResults() {
+            // 模拟FTP计算结果
+            const currentBalance = parseFloat(document.getElementById('current-balance').value) || 1000000;
+            const executionRate = parseFloat(document.getElementById('execution-rate').value) || 0.035;
+            
+            // 模拟计算
+            const ftpPrice = (executionRate * 0.8).toFixed(4);
+            const transferIncome = (currentBalance * (executionRate - parseFloat(ftpPrice)) / 365).toFixed(2);
+            const interestIncome = (currentBalance * executionRate / 365).toFixed(2);
+            const ftpIncome = (parseFloat(transferIncome) + parseFloat(interestIncome)).toFixed(2);
+            
+            // 显示结果
+            document.getElementById('ftp-price').textContent = ftpPrice + '%';
+            document.getElementById('transfer-income').textContent = transferIncome;
+            document.getElementById('interest-income').textContent = interestIncome;
+            document.getElementById('ftp-income').textContent = ftpIncome;
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('calc-date').valueAsDate = new Date();
+            document.getElementById('account-scheme').value = '';
+            document.getElementById('currency').value = '';
+            document.getElementById('asset-liability').value = '';
+            document.getElementById('original-amount').value = '';
+            document.getElementById('current-balance').value = '';
+            document.getElementById('execution-rate').value = '';
+            document.getElementById('account-term').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('pricing-assistant').value = '';
+        }
+    </script>
 </body>
-
 </html>

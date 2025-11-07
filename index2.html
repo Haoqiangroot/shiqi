@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+
+<meta charset="utf-8">
+
+<title>iframe</title>
+
+<meta name="viewport" content="width=device-width">
+
+<meta name="description" content="A collection of loading spinners animated with CSS">
+
+<meta property="og:title" content="Single Element CSS Spinners">
+
+<meta property="og:type" content="website">
+
+<meta property="og:description" content="A collection of loading spinners animated with CSS">
+
+
+
+<script src="script/modernizr-2.8.2.js"></script>
+
+<link rel="stylesheet" href="css/main.css">
+
+<link rel="stylesheet" href="css/load4.css">
+<script>
+window.onload=function(){
+	console.log("加载中")
+function callFun(e) {
+    console.log("vue call fun" + JSON.stringify(e.data));
+    // SecondPage 2   FirstPage 1
+    if (e.data.event == 'SecondPage') {
+	iframePage = true
+    }else if(e.data.event == 'FirstPage'){
+	iframePage = false
+    }
+    if (e.data.event != 'CustomEvent') return;
+    postData(ApiUrl.khjd + "/app", { id: e.data.additionalData.baseId },
+	function (data) {
+	    console.log("个人数据====》" + JSON.stringify(data));
+	    if (data) {
+		goToQjSt(data)
+	    }
+	})
+}
+window.addEventListener('message', callFun);
+// 创建dom
+var newParagraph = document.createElement("iframe");
+newParagraph.id = 'mapFrame'
+newParagraph.src = "https://haoqiangroot.github.io/shiqi/index_from.html"
+newParagraph.width="100%"
+newParagraph.height="500px"
+var appDiv = document.getElementById("app");
+appDiv.appendChild(newParagraph);
+console.log("加载结束")
+}
+
+</script>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="inner"></div>
+
+</header>
+
+
+	<div id="app" style="
+    width: 100%;
+    height: 500px;">
+	</div>
+
+
+<script src="http://www.jq22.com/jquery/1.7.2/jquery.min.js"></script>
+<script>
+
+</script>
+</body>
+
+</html>
